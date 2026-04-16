@@ -14,6 +14,7 @@ The numbers at the beginning of the file names show the learning order:
 - `02_...` adding an output parser on top of the previous step
 - `03_...` moving from static messages to prompt templates
 - `04_...` serving the chain through LangServe and FastAPI
+- `05_...` adding conversation memory with message history
 
 Each new file should be read as a continuation of the previous one.
 
@@ -84,6 +85,24 @@ What I learned here:
 - how to turn a LangChain chain into an API endpoint
 - how LangServe integrates with FastAPI
 - how to move from local scripts toward a service-oriented workflow
+
+### `05_messaging_history.py`
+
+This step adds conversation memory so the chain can keep track of previous messages inside the same session.
+
+In this file:
+
+- `InMemoryChatMessageHistory` is used as a simple in-memory store
+- `get_session_history(...)` creates or returns chat history per session
+- `MessagesPlaceholder` injects prior conversation into the prompt
+- `RunnableWithMessageHistory` wraps the chain and keeps the interaction state
+- the script runs in a loop and streams responses for an ongoing chat session
+
+What I learned here:
+
+- how to attach memory to a runnable chain
+- how session-based chat history works in LangChain
+- how to include prior messages in the prompt flow with `MessagesPlaceholder`
 
 ## Technologies
 
