@@ -85,38 +85,6 @@ What I learned here:
 - how LangServe integrates with FastAPI
 - how to move from local scripts toward a service-oriented workflow
 
-## Setup
-
-Create and activate a virtual environment, then install the dependencies:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
-
-Add your OpenAI key to `.env`:
-
-```env
-OPENAI_API_KEY=your_key_here
-```
-
-Run the examples:
-
-```bash
-python 01_get_first_message.py
-python 02_output_parser.py
-python 03_prompt_templates.py
-python 04_langserve.py
-```
-
-When `04_langserve.py` is running, the LangServe route is available at:
-
-```text
-http://localhost:8000/chain
-```
-
 ## Technologies
 
 - Python
