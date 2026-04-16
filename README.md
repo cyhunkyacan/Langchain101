@@ -12,7 +12,8 @@ The numbers at the beginning of the file names show the learning order:
 
 - `01_...` basic LangChain and model invocation
 - `02_...` adding an output parser on top of the previous step
-- `03_...` preparing the transition into prompt templates
+- `03_...` moving from static messages to prompt templates
+- `04_...` serving the chain through LangServe and FastAPI
 
 Each new file should be read as a continuation of the previous one.
 
@@ -52,14 +53,69 @@ What I learned here:
 
 ### `03_prompt_templates.py`
 
-This file was created as the transition point into prompt templates.
+This step moves the flow away from hardcoded messages and into reusable prompt templates.
 
-At the moment:
+In this file:
 
-- `ChatPromptTemplate` has been imported
-- the current flow still works with the same logic as `02_output_parser.py`
+- a `system_prompt` with variables is defined
+- `ChatPromptTemplate.from_messages(...)` is used to build the prompt
+- the chain now accepts structured input like `language` and `text`
+- the parser is still composed with the model through LCEL
 
-That also matches the nature of this repo as a learning log: sometimes I prepare the ground for the next topic before fully applying it.
+What I learned here:
+
+- how to replace fixed chat messages with dynamic prompt variables
+- how to pass dictionary input into a chain
+- how prompt templates fit naturally into the LCEL pipeline
+
+### `04_langserve.py`
+
+This step exposes the same translation chain as an HTTP service.
+
+In this file:
+
+- the existing prompt-template-based chain is reused
+- a FastAPI app is created
+- `langserve.add_routes(...)` mounts the chain under `/chain`
+- the app can be started locally with Uvicorn
+
+What I learned here:
+
+- how to turn a LangChain chain into an API endpoint
+- how LangServe integrates with FastAPI
+- how to move from local scripts toward a service-oriented workflow
+
+## Setup
+
+Create and activate a virtual environment, then install the dependencies:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+Add your OpenAI key to `.env`:
+
+```env
+OPENAI_API_KEY=your_key_here
+```
+
+Run the examples:
+
+```bash
+python 01_get_first_message.py
+python 02_output_parser.py
+python 03_prompt_templates.py
+python 04_langserve.py
+```
+
+When `04_langserve.py` is running, the LangServe route is available at:
+
+```text
+http://localhost:8000/chain
+```
 
 ## Technologies
 
@@ -68,6 +124,8 @@ That also matches the nature of this repo as a learning log: sometimes I prepare
 - LangChain OpenAI
 - OpenAI API
 - python-dotenv
+- FastAPI
+- LangServe
 
 ## Purpose Of This Repo
 
