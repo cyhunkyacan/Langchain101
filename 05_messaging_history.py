@@ -41,4 +41,4 @@ if __name__ == '__main__':
             {"input" : user_input},
             config = config
         ):
-            print(r.content, end=" ")
+            print(r.content)

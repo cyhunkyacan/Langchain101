@@ -15,6 +15,7 @@ The numbers at the beginning of the file names show the learning order:
 - `03_...` moving from static messages to prompt templates
 - `04_...` serving the chain through LangServe and FastAPI
 - `05_...` adding conversation memory with message history
+- `06_...` storing documents as embeddings and retrieving context with a vector store
 
 Each new file should be read as a continuation of the previous one.
 
@@ -104,15 +105,36 @@ What I learned here:
 - how session-based chat history works in LangChain
 - how to include prior messages in the prompt flow with `MessagesPlaceholder`
 
+### `06_vector_store.py`
+
+This step moves from chat memory into retrieval.
+
+In this file:
+
+- a few sample `Document` objects are created as a tiny knowledge base
+- `OpenAIEmbeddings` converts those documents into vector representations
+- `Chroma.from_documents(...)` stores the embedded documents in a vector store
+- `similarity_search` is wrapped as a retriever and plugged into the chain
+- the prompt tells the model to answer using the retrieved context only
+
+What I learned here:
+
+- the difference between raw prompt input and retrieved context
+- how embeddings make semantic search possible
+- how a retriever can be composed into an LCEL chain
+- the first building block behind retrieval-augmented generation workflows
+
 ## Technologies
 
 - Python
 - LangChain
 - LangChain OpenAI
+- LangChain Chroma
 - OpenAI API
 - python-dotenv
 - FastAPI
 - LangServe
+- Chroma vector store
 
 ## Purpose Of This Repo
 
@@ -121,9 +143,11 @@ This repo exists to:
 - document my progress while learning LangChain
 - break core concepts into small and readable examples
 - build a visible record of how my understanding evolves over time
+- keep my personal study notes in code form instead of treating this as a polished product
 
 ## Notes
 
 - `.env` is intentionally kept outside the repo
 - the files are learning-focused, not production-focused
+- this repo is basically my personal LangChain study notebook
 - the code may be refactored over time; the main value here is the progress record
